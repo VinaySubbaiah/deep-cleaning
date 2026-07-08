@@ -1,0 +1,111 @@
+{
+  "theme": "Light",
+  "archetype": "Swiss & High-Contrast (Professional & Trustworthy)",
+  "app_type": "hybrid_fullstack",
+  "colors": {
+    "primary": "#0B1D33",
+    "accent": "#2ECC71",
+    "secondary_accent": "#E8A317",
+    "background": "#FFFFFF",
+    "light_section": "#F8F9FA",
+    "text": "#202020"
+  },
+  "typography": {
+    "primary_font": "Montserrat",
+    "secondary_font": "Lato",
+    "rules": {
+      "headings": "font-sans (Montserrat), font-bold or font-black, tracking-tight. Use text-[#0B1D33] for strong contrast.",
+      "body": "font-sans (Lato), font-normal, leading-relaxed, text-[#202020].",
+      "labels": "font-sans (Montserrat), uppercase, text-xs, tracking-[0.2em], text-[#202020]/70."
+    }
+  },
+  "spacing_and_layout": {
+    "container_padding": "px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto",
+    "section_spacing": "py-16 lg:py-24",
+    "grid_strategy": {
+      "services": "Bento Grid style. Mix of col-span-1 and col-span-2 tiles to avoid boring uniformity. Gap-6 or gap-8.",
+      "gallery": "Responsive grid for images (grid-cols-1 md:grid-cols-2 lg:grid-cols-3) with tab filters above."
+    },
+    "surface_styles": {
+      "header": "Crystal Glass: backdrop-blur-xl bg-white/90, 1px border-b border-gray-100. Must be sticky z-50.",
+      "cards": "Neumorphism Light: bg-[#FFFFFF] or bg-[#F8F9FA], shadow-sm, 1px border border-gray-100. Hover: -translate-y-1, shadow-lg, border-[#2ECC71]/30, transition-all 0.3s ease.",
+      "mobile_cta_container": "Solid bg-white, border-t border-gray-200, p-4 fixed bottom-0 w-full z-40 (Mobile only)."
+    }
+  },
+  "components": {
+    "navigation": {
+      "rules": "Desktop: Logo left, Links center, Book Now (Primary CTA) right. Mobile: Hamburger menu, links stack, sticky CTA at bottom."
+    },
+    "hero": {
+      "layout": "Large headline 'From Dirty to Spotless'. Subheading below. Two CTAs side by side. Below text, a massive Before/After slider component (max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl).",
+      "overlay": "If using a background image, max black overlay 30% (bg-black/30)."
+    },
+    "buttons": {
+      "primary": "bg-[#0B1D33] text-white hover:bg-[#0B1D33]/90 rounded-md px-8 py-4 font-semibold transition-colors",
+      "accent": "bg-[#2ECC71] text-white hover:bg-[#2ECC71]/90 rounded-md px-8 py-4 font-semibold transition-colors shadow-md shadow-[#2ECC71]/20",
+      "secondary": "bg-[#E8A317] text-[#0B1D33] hover:bg-[#E8A317]/90 rounded-md px-8 py-4 font-semibold transition-colors"
+    },
+    "floating_whatsapp": {
+      "rules": "Fixed bottom-right (bottom-24 on mobile, bottom-8 on desktop). Green #2ECC71 circular button, large icon, shadow-xl, z-50, hover:scale-110 transition-transform. Phone: 9902608075."
+    },
+    "before_after_slider": {
+      "rules": "Interactive component. Overlay 'Before' image on top of 'After' image with a draggable vertical divider line. Use a custom handle (bg-[#E8A317] or #FFFFFF)."
+    },
+    "forms": {
+      "rules": "Use Shadcn components. Input, Select, Textarea. Focus states must ring with #2ECC71 (ring-2 ring-[#2ECC71]/50)."
+    },
+    "counters": {
+      "rules": "Use framer-motion for counting up animations when scrolled into view. Text size large (text-4xl lg:text-5xl) in primary color #0B1D33, text-accent for the '+'."
+    }
+  },
+  "media": {
+    "hero_and_interiors": [
+      {
+        "url": "https://images.unsplash.com/photo-1609081144289-eacc3108cd03",
+        "description": "Bright modern living room - Spotless clean. Use as Hero or After image."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1628744876497-eb30460be9f6",
+        "description": "Clean white couch interior. Use for room showcase (Living Area)."
+      }
+    ],
+    "before_after_placeholders": [
+      {
+        "url": "https://images.unsplash.com/photo-1649954596857-1e8c87d53ae3",
+        "description": "Cluttered kitchen. Use as 'Before' state in sliders."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1714058973555-a255930b9a39",
+        "description": "Clean bathroom. Use as 'After' state in sliders or Bathroom showcase."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1759846866217-e627e4478f82",
+        "description": "Cleaning supplies. Use for Eco-friendly or Process section."
+      }
+    ],
+    "testimonials": [
+      {
+        "url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+        "description": "Smiling female client portrait."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e",
+        "description": "Smiling mature client portrait."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+        "description": "Professional female client portrait."
+      }
+    ]
+  },
+  "testing_and_accessibility": {
+    "rules": "All interactive elements MUST include a 'data-testid' attribute (e.g., data-testid='book-now-button', data-testid='whatsapp-fab', data-testid='tab-kitchen'). Ensure contrast ratios for text on light backgrounds exceed APCA standards."
+  },
+  "instructions_to_main_agent": {
+    "file_extensions": "Use .js and .jsx for all React components. Do not use .tsx or .ts.",
+    "icons": "Use lucide-react (Check, Star, Menu, X, Home, Sparkles, Wind, Trash2, Droplets, MapPin, Calendar, Clock, MessageSquare). For WhatsApp, use standard Lucide icon or custom SVG if needed.",
+    "animation": "Use framer-motion for scroll reveal, counters, and page transitions.",
+    "components": "Marketing sections use pure Tailwind+HTML logic. Booking Form and Admin Dashboard strictly use Shadcn UI components (Card, Table, Input, Select, Button, Dialog).",
+    "routing": "Ensure paths exist for Home, Services, About Us, Our Work (Gallery), Reviews, Contact/Book, and /admin for the dashboard."
+  }
+}
