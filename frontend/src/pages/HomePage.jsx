@@ -123,7 +123,7 @@ export default function HomePage() {
                     </div>
                     <p className="text-sm text-[#202020]/70 leading-relaxed min-h-[3.5rem]">{s.desc}</p>
                     <button
-                      onClick={() => navigate("/contact", { state: { service: s.title } })}
+                      onClick={() => navigate(`/contact?service=${encodeURIComponent(s.title)}`)}
                       data-testid={`service-book-${s.key}`}
                       className="mt-4 inline-flex items-center gap-1.5 text-sm font-heading font-semibold text-[#2ECC71] hover:gap-2.5 transition-all"
                     >

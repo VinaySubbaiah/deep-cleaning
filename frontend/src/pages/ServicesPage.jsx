@@ -40,7 +40,7 @@ export default function ServicesPage() {
                   </div>
                   <p className="text-sm text-[#202020]/70 leading-relaxed">{s.desc}</p>
                   <button
-                    onClick={() => navigate("/contact", { state: { service: s.title } })}
+                    onClick={() => navigate(`/contact?service=${encodeURIComponent(s.title)}`)}
                     className="mt-5 inline-flex items-center gap-2 bg-[#2ECC71] text-white font-heading font-semibold text-sm px-5 py-2.5 rounded-md hover:bg-[#2ECC71]/90"
                     data-testid={`services-page-book-${s.key}`}
                   >

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { CheckCircle2, Mail, Phone, MapPin, Send } from "lucide-react";
@@ -28,16 +28,28 @@ const initial = {
 
 export default function ContactPage() {
   const location = useLocation();
-  const [form, setForm] = useState(initial);
+  const [searchParams] = useSearchParams();
+  const [form, setForm] = useState(() => {
+    // Read preselect service synchronously to avoid effect timing issues
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const svc = sp.get("service");
+      if (svc) return { ...initial, service: svc };
+    }
+    return initial;
+  });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (location.state?.service) {
-      setForm((f) => ({ ...f, service: location.state.service }));
+    const fromQuery = searchParams.get("service");
+    const fromState = location.state?.service;
+    const preselect = fromQuery || fromState;
+    if (preselect) {
+      setForm((f) => (f.service === preselect ? f : { ...f, service: preselect }));
     }
-  }, [location.state]);
+  }, [location.state, searchParams]);
 
   const setField = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
