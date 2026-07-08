@@ -1,0 +1,48 @@
+{
+  "summary": "Full-stack testing done. Backend: 20/20 pytest tests pass (health, lead CRUD, admin auth, admin leads CRUD/stats, validation, ObjectId leakage). Frontend: home, services, gallery, contact submission, admin login/dashboard/status-update/logout all working. Resend integration confirmed via backend log 'Lead email sent: <id>'. One HIGH-priority frontend bug: 'Book Now' on a service card (Home + Services pages) navigates to /contact but does NOT pre-select the service on the Contact form (form.service stays empty).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "ContactPage",
+        "issue": "Service pre-selection from ServicesPage/HomePage 'Book Now' does not work. window.history.state.usr contains {service: '<title>'} after navigation, but ContactPage's useEffect on location.state does not set form.service — Select trigger still shows placeholder 'Choose a service'. Confirmed on both /services (services-page-book-<key>) and Home (service-book-<key>) via multiple clicks (kitchen, residential).",
+        "selector": "[data-testid=\"select-service\"]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix ContactPage service pre-selection: verify useLocation().state is being read on mount in React 19 + react-router-dom v7. As a robust fix, also read from window.history.state?.usr as a fallback, or pass the service via query param (?service=...) which survives remounts/StrictMode. The Radix Select value binding itself is fine — the issue is that form.service never receives location.state.service.",
+    "Optional: The frontend test-credentials memory file said RESEND_API_KEY was empty, but it is actually set in backend/.env and emails ARE being delivered (verified in backend.err.log: 'Lead email sent: <id>'). Update /app/memory/test_credentials.md to reflect the current live state."
+  ],
+  "critical_code_review_comments": [
+    "server.py `send_lead_email` is awaited inside the request handler; if Resend is slow the client waits. Consider fire-and-forget via asyncio.create_task so the client always sees fast success. (Currently latency is acceptable.)",
+    "server.py CORS: allow_credentials=True combined with allow_origins=['*'] is browser-invalid. Since only a bearer token is used (no cookies from the frontend), this is not exploited today, but should be tightened to the actual frontend origin.",
+    "server.py uses deprecated FastAPI @app.on_event('startup'/'shutdown'); should migrate to lifespan handlers.",
+    "ContactPage — pre-selection from cross-page navigation is fragile (relies on router state that gets lost on refresh). Prefer URL query param (?service=<slug>) for shareability and reliability.",
+    "AdminDashboardPage stores JWT in localStorage — vulnerable to XSS token theft. Backend already supports httpOnly cookies; consider migrating.",
+    "seed_admin uses ADMIN_EMAIL/ADMIN_PASSWORD env; behavior is idempotent (updates password if changed). Good."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {
+    "backend": "100% (20/20)",
+    "frontend": "~92% (12/13 flows) — 1 bug: service pre-select"
+  },
+  "test_credentials": "admin@freshdeepclean.com / FreshAdmin@2025 (from /app/memory/test_credentials.md — verified working)",
+  "seed_data_creation": "Created a few 'TEST_' prefixed leads via POST /api/leads and one via UI (playwright.test@example.com) — safe to leave; used TEST_ prefix.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All CRUD + auth flows are verified. Only outstanding functional issue is service pre-selection on /contact when navigating from /services or / Home 'Book Now' cards. Backend fully green; use /app/backend/tests/backend_test.py for regression. Resend email verified working via backend.err.log line 'Lead email sent: <id>'.",
+  "rca of the issue": "history.state.usr = {service: 'Kitchen & Appliance Cleaning'} is correctly written by react-router's useNavigate(_, { state }). However, ContactPage's useEffect(() => { if (location.state?.service) setForm(...); }, [location.state]) does not update form.service — verified by opening the Select: all 8 options show aria-selected='false' and data-state='unchecked'. Likely cause: StrictMode double-mount + React 19 useLocation returning the state only on the discarded first render, or a race between initial state hydration and Layout's Outlet remount. Recommended mitigation: pass service via query param (navigate(`/contact?service=${encodeURIComponent(s.title)}`)) and read new URLSearchParams(location.search).get('service') in ContactPage useEffect — this is deterministic and survives refresh."
+}
